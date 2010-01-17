@@ -16,7 +16,7 @@ class Mp3FileFilter:
         self.directory = directory
 
     def __getUnfilteredFiles__(self):
-        return [root + '/' + file for root, dirs, files in os.walk(self.directory) 
+        return [os.path.join(root, file) for root, dirs, files in os.walk(self.directory) 
                 for file in files]
 
     def getFiles(self):
@@ -28,7 +28,7 @@ class NonMp3FileFilter:
         self.directory = directory
     
     def __getUnfilteredFiles__(self):
-        return [root + '/' + file for root, dirs, files in os.walk(self.directory)
+        return [os.path.join(root, file) for root, dirs, files in os.walk(self.directory)
                 for file in files]
 
     def getFiles(self):
