@@ -12,7 +12,7 @@ class FileMover:
         tempFileLocations = []
         for file in self.files:
             tempFileName = str(uuid.uuid4()) + '.mp3'
-            tempFileLocation = self.location + '/' + tempFileName
-            shutil.move(file, self.location + '/' + tempFileName)
+            tempFileLocation = os.path.join(self.location, tempFileName)
+            shutil.move(file, tempFileLocation)
             tempFileLocations.append(tempFileLocation)
         return tempFileLocations
