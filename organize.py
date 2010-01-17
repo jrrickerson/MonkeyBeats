@@ -35,7 +35,7 @@ def Main():
 
     print "Directory contains %s MP3 files" % len(mp3files)
     
-    tempFolder = directory + "/" + str(uuid.uuid4())
+    tempFolder = os.path.join(directory, str(uuid.uuid4()))
     sys.stdout.write("Moving files to temporary location %s..." % tempFolder)
     sys.stdout.flush()
     mover = FileMover(mp3files, tempFolder)
