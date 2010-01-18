@@ -47,6 +47,9 @@ def Main():
     nonMp3FilesFilter = NonMp3FileFilter(directory)
     nonMp3Files = nonMp3FilesFilter.getFiles()
 
+    for file in nonMp3Files:
+        os.remove(file)
+
     printDone()
 
     sys.stdout.write("Directory contains ")
