@@ -3,7 +3,7 @@ import uuid
 import sys
 import os
 from errors import *
-from mp3FileFilter import *
+from fileFilters import *
 from fileMover import *
 from organizer import *
 
