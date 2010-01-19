@@ -40,6 +40,10 @@ def __createDirsFromMetadata__(location, metadata):
     albumDir = os.path.join(location, metadata['album'])
     if not os.path.exists(albumDir):
         os.mkdir(albumDir)
+
+def __getPathFromMetadata__(location, metadata):
+    return os.path.join(location, metadata['artist'], metadata['album'],
+                 metadata['artist'] + ' - ' + metadata['title'] + ".mp3")
     
 
 class Organizer:
@@ -60,6 +64,8 @@ class Organizer:
                         __dirEncodeMetadata__(metadata)
                         try:
                             __createDirsFromMetadata__(self.location, metadata)
+                            path = __getPathFromMetadata__(self.location, metadata)
+                            shutil.move(file, path)
                         except TypeError:
                             print metadata
             except eyeD3.TagException:
