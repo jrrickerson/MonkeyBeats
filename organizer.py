@@ -13,9 +13,14 @@ def __nullMetadata__(metadata):
         metadata['artist'] is None
 
 def __stripMetadata__(metadata):
-    metadata['title'].strip()
-    metadata['album'].strip()
-    metadata['artist'].strip()
+    metadata['title'] = metadata['title'].strip()
+    metadata['album'] = metadata['album'].strip()
+    metadata['artist'] = metadata['artist'].strip()
+
+def __emptyMetadata__(metadata):
+    return len(metadata['title']) == 0 or \
+        len(metadata['album']) == 0 or \
+        len(metadata['artist']) == 0
 
 class Metadata:
     def __init__(self, name):
@@ -47,7 +52,10 @@ class Organizer:
                 tag.link(file)
                 metadata = __retrieveMetadata__(tag)
                 if not __nullMetadata__(metadata):
-                    print metadata
+                    __stripMetadata__(metadata)
+                    if not __emptyMetadata__(metadata):
+                        print metadata
             except eyeD3.TagException:
                 print file + " has issue with tags"
+
 
