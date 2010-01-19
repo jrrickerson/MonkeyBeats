@@ -1,39 +1,68 @@
 import eyeD3
 import os
 import shutil
+import codecs
 
-class Metadata:
-    def __init__(self, name):
-        self.files = set()
-        self.name = name
-        self.children = set()
+def __retrieveMetadata__(tag):
+    return { 'title' : tag.getTitle(), 
+             'artist' : tag.getArtist(), 
+             'album' : tag.getAlbum() }
 
-    def addFile(self, file):
-        self.files.add(file)
+def __nullMetadata__(metadata):
+    return metadata['title'] is None or \
+        metadata['album'] is None or \
+        metadata['artist'] is None
 
-    def addFiles(self, files):
-        self.files = files
+def __stripMetadata__(metadata):
+    metadata['title'] = metadata['title'].strip()
+    metadata['album'] = metadata['album'].strip()
+    metadata['artist'] = metadata['artist'].strip()
 
-    def addChild(self, childMetadata):
-        self.children.add(childMetadata)
+def __emptyMetadata__(metadata):
+    return len(metadata['title']) == 0 or \
+        len(metadata['album']) == 0 or \
+        len(metadata['artist']) == 0
 
-    def __str__(self):
-        return self.name
+def __decodeMetadata__(metadata):
+    metadata['title'] = codecs.encode(metadata['title'], "ascii", "ignore")
+    metadata['album'] = codecs.encode(metadata['album'], "ascii", "ignore")
+    metadata['artist'] = codecs.encode(metadata['artist'], "ascii", "ignore")
+
+def __dirEncodeMetadata__(metadata):
+    metadata['title'] = metadata['title'].replace('/', '-')
+    metadata['album'] = metadata['album'].replace('/', '-')
+    metadata['artist'] = metadata['artist'].replace('/', '-')
+
+def __createDirsFromMetadata__(location, metadata):
+    artistDir = os.path.join(location, metadata['artist'])
+    if not os.path.exists(artistDir):
+        os.mkdir(artistDir)
+    albumDir = os.path.join(location, metadata['album'])
+    if not os.path.exists(albumDir):
+        os.mkdir(albumDir)
+    
 
 class Organizer:
     def __init__(self, files, location):
         self.files = files
         self.location = location
-        self.fileMetadatas = []
 
     def organize(self):
-        artists = set()
         tag = eyeD3.Tag()
         for file in self.files:
             try:
                 tag.link(file)
-                artists.add(tag.getArtist().strip())
+                metadata = __retrieveMetadata__(tag)
+                if not __nullMetadata__(metadata):
+                    __stripMetadata__(metadata)
+                    if not __emptyMetadata__(metadata):
+                        __decodeMetadata__(metadata)
+                        __dirEncodeMetadata__(metadata)
+                        try:
+                            __createDirsFromMetadata__(self.location, metadata)
+                        except TypeError:
+                            print metadata
             except eyeD3.TagException:
                 print file + " has issue with tags"
-        metadatas = set(Metadata(unicode(artist)) for artist in artists)
-        return metadatas
+
+

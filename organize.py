@@ -62,7 +62,7 @@ def Main():
     sys.stdout.flush()
 
     organizer = Organizer(tempFiles, directory)
-    metadatas = organizer.organize()
+    organizer.organize()
 
     printDone()
 
