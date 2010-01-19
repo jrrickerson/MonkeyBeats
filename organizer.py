@@ -39,7 +39,6 @@ class Organizer:
     def __init__(self, files, location):
         self.files = files
         self.location = location
-        self.fileMetadatas = []
 
     def organize(self):
         tag = eyeD3.Tag()
