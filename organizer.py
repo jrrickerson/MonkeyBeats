@@ -27,13 +27,10 @@ class Organizer:
         self.fileMetadatas = []
 
     def organize(self):
-        artists = set()
         tag = eyeD3.Tag()
         for file in self.files:
             try:
                 tag.link(file)
-                artists.add(tag.getArtist().strip())
             except eyeD3.TagException:
                 print file + " has issue with tags"
-        metadatas = set(Metadata(unicode(artist)) for artist in artists)
-        return metadatas
+
