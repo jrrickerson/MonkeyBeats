@@ -33,6 +33,15 @@ def __dirEncodeMetadata__(metadata):
     metadata['album'] = metadata['album'].replace('/', '-')
     metadata['artist'] = metadata['artist'].replace('/', '-')
 
+def __createDirsFromMetadata__(location, metadata):
+    artistDir = os.path.join(location, metadata['artist'])
+    if not os.path.exists(artistDir):
+        os.mkdir(artistDir)
+    albumDir = os.path.join(location, metadata['album'])
+    if not os.path.exists(albumDir):
+        os.mkdir(albumDir)
+    
+
 class Organizer:
     def __init__(self, files, location):
         self.files = files
@@ -49,6 +58,10 @@ class Organizer:
                     if not __emptyMetadata__(metadata):
                         __decodeMetadata__(metadata)
                         __dirEncodeMetadata__(metadata)
+                        try:
+                            __createDirsFromMetadata__(self.location, metadata)
+                        except TypeError:
+                            print metadata
             except eyeD3.TagException:
                 print file + " has issue with tags"
 
