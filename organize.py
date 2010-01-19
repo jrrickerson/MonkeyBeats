@@ -28,7 +28,8 @@ def Main():
     sys.stdout.write("Retrieving all MP3 files...")
     sys.stdout.flush()
     
-    filter = Mp3FileFilter(directory)
+    fileSource = FileSource(directory)
+    filter = Mp3FileFilter(fileSource)
     mp3files = filter.getFiles()
 
     printDone()
@@ -44,7 +45,7 @@ def Main():
     printDone()
     sys.stdout.write("Finding non MP3 files...")
 
-    nonMp3FilesFilter = NonMp3FileFilter(directory)
+    nonMp3FilesFilter = NonMp3FileFilter(fileSource)
     nonMp3Files = nonMp3FilesFilter.getFiles()
 
     for file in nonMp3Files:
