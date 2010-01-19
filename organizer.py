@@ -2,6 +2,16 @@ import eyeD3
 import os
 import shutil
 
+def __retrieveMetadata__(tag):
+    return { 'title' : tag.getTitle(), 
+             'artist' : tag.getArtist(), 
+             'album' : tag.getAlbum() }
+
+def __nullMetadata__(metadata):
+    return metadata['title'] is None or \
+        metadata['album'] is None or \
+        metadata['artist'] is None
+
 class Metadata:
     def __init__(self, name):
         self.files = set()
@@ -31,6 +41,9 @@ class Organizer:
         for file in self.files:
             try:
                 tag.link(file)
+                metadata = __retrieveMetadata__(tag)
+                if not __nullMetadata__(metadata):
+                    print metadata
             except eyeD3.TagException:
                 print file + " has issue with tags"
 
