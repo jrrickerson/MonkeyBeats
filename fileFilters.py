@@ -2,11 +2,11 @@ import re
 import os
 
 class FileSource:
-    def __init__(self, rootDirectory):
-        self.rootDirectory = directory
+    def __init__(self, directory):
+        self._initialDirectory = directory
     
     def files(self):
-        return [os.path.join(root, file) for root, dirs, files in os.walk(self.directory)
+        return [os.path.join(root, file) for root, dirs, files in os.walk(self._initialDirectory)
             for file in files]
 
 class FileFilter:
