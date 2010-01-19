@@ -12,6 +12,11 @@ def __nullMetadata__(metadata):
         metadata['album'] is None or \
         metadata['artist'] is None
 
+def __stripMetadata__(metadata):
+    metadata['title'].strip()
+    metadata['album'].strip()
+    metadata['artist'].strip()
+
 class Metadata:
     def __init__(self, name):
         self.files = set()
