@@ -6,44 +6,40 @@ from errors import *
 from fileFilters import *
 from fileMover import *
 from organizer import *
-
-def printDone():
-    print "\033[1;31mdone\033[1;m" # print red
+from views.consoleView import ConsoleView
 
 def Main():
-    usage = "Usage: %s <directory>" % sys.argv[0]
 
+    view = ConsoleView()
     if len(sys.argv) != 2:
-        print usage
+        view.displayUsage()
         return
 
     directory = sys.argv[1]
 
     if not os.path.isdir(directory):
-        print "Directory not found"
-        print usage
+        view.displayLine("Directory not found")
+        view.displayUsage()
         return
 
-    print "Directory to organize is %s" % directory
-    sys.stdout.write("Retrieving all MP3 files...")
-    sys.stdout.flush()
+    view.displayLine("Directory to organize is %s" % directory)
+    view.displayMessage("Retrieving all MP3 files...")
     
     fileSource = FileSource(directory)
     filter = Mp3FileFilter(fileSource)
     mp3files = filter.getFiles()
 
-    printDone()
-
-    print "Directory contains %s MP3 files" % len(mp3files)
+    view.displayDone()
+    view.displayLine("Directory contains %s MP3 files" % len(mp3files))
     
     tempFolder = os.path.join(directory, str(uuid.uuid4()))
-    sys.stdout.write("Moving files to temporary location %s..." % tempFolder)
-    sys.stdout.flush()
+    view.displayMessage("Moving files to temporary location %s..." % tempFolder)
+
     mover = FileMover(mp3files, tempFolder)
     tempFiles = mover.move()
 
-    printDone()
-    sys.stdout.write("Finding non MP3 files...")
+    view.displayDone()
+    view.displayMessage("Finding non MP3 files...")
 
     nonMp3FilesFilter = NonMp3FileFilter(fileSource)
     nonMp3Files = nonMp3FilesFilter.getFiles()
@@ -51,21 +47,20 @@ def Main():
     for file in nonMp3Files:
         os.remove(file)
 
-    printDone()
+    view.displayDone()
 
-    sys.stdout.write("Directory contains ")
-    sys.stdout.write("\033[1;31m" + str(len(nonMp3Files)) + "\033[1;m")
-    sys.stdout.write(" non-MP3 files. Deleting...")
+    view.displayMessage("Directory contains ")
+    view.displayMessage("\033[1;31m" + str(len(nonMp3Files)) + "\033[1;m")
+    view.displayMessage(" non-MP3 files. Deleting...")
 
-    printDone()
+    view.displayDone()
 
-    sys.stdout.write("Organizing files...")
-    sys.stdout.flush()
+    view.displayMessage("Organizing files...")
 
     organizer = Organizer(tempFiles, directory)
     organizer.organize()
 
-    printDone()
+    view.displayDone()
 
 if __name__ == "__main__":
     Main()
