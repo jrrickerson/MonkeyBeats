@@ -9,37 +9,34 @@ from organizer import *
 from views.consoleView import ConsoleView
 
 def Main():
-
+    usage = "Usage: %s <directory>" % sys.argv[0]
     view = ConsoleView()
+
     if len(sys.argv) != 2:
-        view.displayUsage()
+        view.displayLine(usage)
         return
-
     directory = sys.argv[1]
-
     if not os.path.isdir(directory):
         view.displayLine("Directory not found")
-        view.displayUsage()
+        view.displayLine(usage)
         return
 
     view.displayLine("Directory to organize is %s" % directory)
-    view.displayMessage("Retrieving all MP3 files...")
+    view.displayLine("Retrieving all MP3 files...")
     
     fileSource = FileSource(directory)
     filter = Mp3FileFilter(fileSource)
     mp3files = filter.getFiles()
 
-    view.displayDone()
     view.displayLine("Directory contains %s MP3 files" % len(mp3files))
     
     tempFolder = os.path.join(directory, str(uuid.uuid4()))
-    view.displayMessage("Moving files to temporary location %s..." % tempFolder)
+    view.displayLine("Moving files to temporary location %s..." % tempFolder)
 
     mover = FileMover(mp3files, tempFolder)
     tempFiles = mover.move()
 
-    view.displayDone()
-    view.displayMessage("Finding non MP3 files...")
+    view.displayLine("Finding non MP3 files...")
 
     nonMp3FilesFilter = NonMp3FileFilter(fileSource)
     nonMp3Files = nonMp3FilesFilter.getFiles()
@@ -47,20 +44,14 @@ def Main():
     for file in nonMp3Files:
         os.remove(file)
 
-    view.displayDone()
-
-    view.displayMessage("Directory contains ")
-    view.displayMessage("\033[1;31m" + str(len(nonMp3Files)) + "\033[1;m")
-    view.displayMessage(" non-MP3 files. Deleting...")
-
-    view.displayDone()
-
-    view.displayMessage("Organizing files...")
+    view.displayLine("Directory contains %s non-MP3 files. Deleting..."
+                     % len(nonMp3Files))
+    view.displayLine("Organizing files...")
 
     organizer = Organizer(tempFiles, directory)
     organizer.organize()
 
-    view.displayDone()
+    view.displayLine("Done!")
 
 if __name__ == "__main__":
     Main()
