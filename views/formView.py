@@ -71,12 +71,3 @@ class FormView(QtGui.QDialog):
         #self.filesTable.cellActivated.connect(self.openFile) 
 
 
-
-if __name__ == '__main__':
-
-    import sys
-
-    app = QtGui.QApplication(sys.argv)
-    window = FormView()
-    window.show()
-    sys.exit(app.exec_())
