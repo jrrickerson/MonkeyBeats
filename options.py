@@ -2,9 +2,9 @@ from optparse import OptionParser
 
 class Options:
     def __init__(self):
-        self.startGuiMode = false
+        self.startGuiMode = False
         self.backupLocation = ""
-        self.followSymbolicLinks = false
+        self.followSymbolicLinks = False
         self.rootDirectory = "."
 
 class OptionsLoader:
