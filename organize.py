@@ -7,15 +7,20 @@ from fileFilters import *
 from fileMover import *
 from organizer import *
 from views.consoleView import ConsoleView
+from views.formView import FormView
 
 def Main():
-    usage = "Usage: %s <directory>" % sys.argv[0]
+    usage = "Usage: %s (-g|<directory>)" % sys.argv[0]
     view = ConsoleView()
 
     if len(sys.argv) != 2:
         view.displayLine(usage)
         return
-    directory = sys.argv[1]
+    directoryOrGui = sys.argv[1]
+    if sys.argv[1] == "-g":
+        print "Gui mode not implemented yet."
+        return
+    
     if not os.path.isdir(directory):
         view.displayLine("Directory not found")
         view.displayLine(usage)
