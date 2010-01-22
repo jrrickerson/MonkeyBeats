@@ -3,7 +3,7 @@
 from PyQt4 import QtCore, QtGui
 
 
-class Window(QtGui.QDialog):
+class FormView(QtGui.QDialog):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
 
@@ -77,6 +77,6 @@ if __name__ == '__main__':
     import sys
 
     app = QtGui.QApplication(sys.argv)
-    window = Window()
+    window = FormView()
     window.show()
     sys.exit(app.exec_())
