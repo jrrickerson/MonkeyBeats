@@ -21,21 +21,21 @@ def Main():
         print "Gui mode not implemented yet."
         return
     
-    if not os.path.isdir(directory):
+    if not os.path.isdir(directoryOrGui):
         view.displayLine("Directory not found")
         view.displayLine(usage)
         return
 
-    view.displayLine("Directory to organize is %s" % directory)
+    view.displayLine("Directory to organize is %s" % directoryOrGui)
     view.displayLine("Retrieving all MP3 files...")
     
-    fileSource = FileSource(directory)
+    fileSource = FileSource(directoryOrGui)
     filter = Mp3FileFilter(fileSource)
     mp3files = filter.getFiles()
 
     view.displayLine("Directory contains %s MP3 files" % len(mp3files))
     
-    tempFolder = os.path.join(directory, str(uuid.uuid4()))
+    tempFolder = os.path.join(directoryOrGui, str(uuid.uuid4()))
     view.displayLine("Moving files to temporary location %s..." % tempFolder)
 
     mover = FileMover(mp3files, tempFolder)
@@ -53,7 +53,7 @@ def Main():
                      % len(nonMp3Files))
     view.displayLine("Organizing files...")
 
-    organizer = Organizer(tempFiles, directory)
+    organizer = Organizer(tempFiles, directoryOrGui)
     organizer.organize()
 
     view.displayLine("Done!")
