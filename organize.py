@@ -1,4 +1,3 @@
-import eyeD3
 import uuid
 import sys
 import os
@@ -47,11 +46,11 @@ def Main():
     nonMp3FilesFilter = NonMp3FileFilter(fileSource)
     nonMp3Files = nonMp3FilesFilter.getFiles()
 
-    if options.backupLocation is not None && os.path.isdir(options.backupLocation):
+    if options.backupLocation is not None and os.path.isdir(options.backupLocation):
         view.displayLine("Backing up {0} non-MP3 files to {1}".format(len(nonMp3Files), options.backupLocation))
         backupMover = FileMover(nonMp3Files, options.backupLocation)
         backupMover.move()
-    else
+    else:
         view.displayLine("Directory contains {0} non-MP3 files. Deleting...".format(len(nonMp3Files)))
         for file in nonMp3Files:
             os.remove(file)
