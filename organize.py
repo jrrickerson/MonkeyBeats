@@ -2,41 +2,41 @@ import eyeD3
 import uuid
 import sys
 import os
-from options import OptionsLoader
+
 from errors import *
 from fileFilters import *
 from fileMover import *
 from organizer import *
 from views.consoleView import ConsoleView
 from views.formView import FormView
-
+from options import OptionsLoader
 def Main():
-    loader = OptionsLoader()
-    options = loader.loadFromArguments(sys.argv)
-    
+    # Parse command line arguments into program options
+    optionsLoader = OptionsLoader()
+    options = optionsLoader.loadFromArguments(sys.argv)
+
     view = ConsoleView()
 
-    directoryOrGui = options.rootDirectory
     if options.startGuiMode:
         print "Gui mode not implemented yet."
         return
     
-    if not os.path.isdir(directoryOrGui):
+    directory = options.rootDirectory
+    if not os.path.isdir(directory):
         view.displayLine("Directory not found")
-        view.displayLine(usage)
         return
 
-    view.displayLine("Directory to organize is %s" % directoryOrGui)
+    view.displayLine("Directory to organize is {0}".format(directory))
     view.displayLine("Retrieving all MP3 files...")
     
-    fileSource = FileSource(directoryOrGui)
+    fileSource = FileSource(directory, options.followSymbolicLinks)
     filter = Mp3FileFilter(fileSource)
     mp3files = filter.getFiles()
 
-    view.displayLine("Directory contains %s MP3 files" % len(mp3files))
+    view.displayLine("Directory contains {0} MP3 files".format(len(mp3files)))
     
-    tempFolder = os.path.join(directoryOrGui, str(uuid.uuid4()))
-    view.displayLine("Moving files to temporary location %s..." % tempFolder)
+    tempFolder = os.path.join(directory, str(uuid.uuid4()))
+    view.displayLine("Moving files to temporary location {0}...".format(tempFolder))
 
     mover = FileMover(mp3files, tempFolder)
     tempFiles = mover.move()
@@ -46,11 +46,15 @@ def Main():
     nonMp3FilesFilter = NonMp3FileFilter(fileSource)
     nonMp3Files = nonMp3FilesFilter.getFiles()
 
-    for file in nonMp3Files:
-        os.remove(file)
+    if options.backupLocation is not None && os.path.isdir(options.backupLocation):
+        view.displayLine("Backing up {0} non-MP3 files to {1}".format(len(nonMp3Files), options.backupLocation))
+        backupMover = FileMover(nonMp3Files, options.backupLocation)
+        backupMover.move()
+    else
+        view.displayLine("Directory contains {0} non-MP3 files. Deleting...".format(len(nonMp3Files)))
+        for file in nonMp3Files:
+            os.remove(file)
 
-    view.displayLine("Directory contains %s non-MP3 files. Deleting..."
-                     % len(nonMp3Files))
     view.displayLine("Organizing files...")
 
     organizer = Organizer(tempFiles, directoryOrGui)

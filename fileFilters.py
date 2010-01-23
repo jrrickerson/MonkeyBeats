@@ -2,12 +2,14 @@ import re
 import os
 
 class FileSource:
-    def __init__(self, directory):
+    def __init__(self, directory, followSymbolicLinks):
         self._initialDirectory = directory
+        self._followSymbolicLinks = followSymbolicLinks
     
     def files(self):
-        return [os.path.join(root, file) for root, dirs, files in os.walk(self._initialDirectory)
-            for file in files]
+        return [os.path.join(root, file) 
+            for root, dirs, files in os.walk(self._initialDirectory, followLinks=self._followSymbolicLinks)) 
+                for file in files]
 
 class FileFilter:
     def __init__(self, fileSource):
