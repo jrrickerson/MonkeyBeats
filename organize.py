@@ -10,6 +10,7 @@ from organizer import *
 from views.consoleView import ConsoleView
 from views.formView import FormView
 from options import OptionsLoader
+
 def Main():
     # Parse command line arguments into program options
     optionsLoader = OptionsLoader()
