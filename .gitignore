@@ -2,3 +2,5 @@
 *.py~
 *.swp
 .ropeproject
+*#
+backup_files
