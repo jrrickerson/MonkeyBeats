@@ -12,8 +12,11 @@ class FileMover:
             os.makedirs(self.location)
         destFileLocations = []
         for file in self.files:
-            filename = str(uuid.uuid4()) + '.mp3'
+            filename = self._generate_unique_filename(file)
             destFileLocation = os.path.join(self.location, filename)
             shutil.move(file, destFileLocation)
             destFileLocations.append(destFileLocation)
         return destFileLocations
+
+    def _generate_unique_filename(self, src):
+        return str(uuid.uuid4()) + '.mp3'
