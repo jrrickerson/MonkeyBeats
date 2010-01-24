@@ -1,5 +1,5 @@
 class EmptyDirectoryRemover:
-    """ Removes the empty directories until a specific location."""
+    """ Removes the empty directories within the specified location."""
     def __init__(self, location):
         self.location = location
 
