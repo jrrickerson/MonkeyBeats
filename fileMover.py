@@ -1,6 +1,7 @@
 import os
 import shutil
 import uuid
+import re
 
 class FileMover:
     def __init__(self, files, location):
@@ -19,4 +20,8 @@ class FileMover:
         return destFileLocations
 
     def _generate_unique_filename(self, src):
-        return str(uuid.uuid4()) + '.mp3'
+        result = re.search("\.[^\.]*$", src)
+        extension = ""
+        if result is not None:
+            extension = result.group(0)
+        return str(uuid.uuid4()) + extension
