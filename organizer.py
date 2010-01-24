@@ -37,7 +37,7 @@ def __createDirsFromMetadata__(location, metadata):
     artistDir = os.path.join(location, metadata['artist'])
     if not os.path.exists(artistDir):
         os.mkdir(artistDir)
-    albumDir = os.path.join(location, metadata['album'])
+    albumDir = os.path.join(artistDir, metadata['album'])
     if not os.path.exists(albumDir):
         os.mkdir(albumDir)
 
