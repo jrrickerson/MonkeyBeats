@@ -57,7 +57,7 @@ def Main():
 
     view.displayLine("Organizing files...")
 
-    organizer = Organizer(tempFiles, directoryOrGui)
+    organizer = Organizer(tempFiles, directory)
     organizer.organize()
 
     view.displayLine("Done!")
