@@ -22,7 +22,7 @@ class OptionsLoader:
         self._parser.add_option("-g", "--gui", dest="startGuiMode",
             help="Start in GUI mode", action="store_true")
         self._parser.add_option("-f", "--followLinks", dest="followSymbolicLinks",
-            help="Follow symbolic links to target directories", action="store_true")
+            help="Follow symbolic links to target directories [default %default]", action="store_true")
         self._parser.add_option("-b", "--backup", dest="backupLocation",
             metavar="BACKUP_DIR", help="Backup unrelated files to BACKUP_DIR")
         self._parser.add_option("-d", "--directory", dest="rootDirectory",
