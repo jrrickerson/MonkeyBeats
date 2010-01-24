@@ -8,7 +8,8 @@ class FileMover:
         self.location = location
 
     def move(self):
-        os.makedirs(self.location)
+        if not os.path.exists(self.location):
+            os.makedirs(self.location)
         tempFileLocations = []
         for file in self.files:
             tempFileName = str(uuid.uuid4()) + '.mp3'
