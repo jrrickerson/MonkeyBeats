@@ -2,6 +2,7 @@ import eyeD3
 import uuid
 import sys
 import os
+from options import OptionsLoader
 from errors import *
 from fileFilters import *
 from fileMover import *
@@ -10,14 +11,13 @@ from views.consoleView import ConsoleView
 from views.formView import FormView
 
 def Main():
-    usage = "Usage: %s (-g|<directory>)" % sys.argv[0]
+    loader = OptionsLoader()
+    options = loader.loadFromArguments(sys.argv)
+    
     view = ConsoleView()
 
-    if len(sys.argv) != 2:
-        view.displayLine(usage)
-        return
-    directoryOrGui = sys.argv[1]
-    if sys.argv[1] == "-g":
+    directoryOrGui = options.rootDirectory
+    if options.startGuiMode:
         print "Gui mode not implemented yet."
         return
     
