@@ -8,7 +8,7 @@ class FileSource:
     
     def files(self):
         return [os.path.join(root, file) 
-            for root, dirs, files in os.walk(self._initialDirectory, followLinks=self._followSymbolicLinks) 
+            for root, dirs, files in os.walk(self._initialDirectory, followlinks=self._followSymbolicLinks) 
                 for file in files]
 
 class FileFilter:
