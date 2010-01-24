@@ -6,6 +6,7 @@ from errors import *
 from fileFilters import *
 from fileMover import *
 from organizer import *
+from emptyDirectoryRemover import *
 from views.consoleView import ConsoleView
 from views.formView import FormView
 from options import OptionsLoader
@@ -59,6 +60,11 @@ def Main():
 
     organizer = Organizer(tempFiles, directory)
     organizer.organize()
+
+    view.displayLine("Removing empty directories...")
+
+    dirRemover = EmptyDirectoryRemover(directory)
+    dirRemover.remove()
 
     view.displayLine("Done!")
 
