@@ -10,10 +10,10 @@ class FileMover:
     def move(self):
         if not os.path.exists(self.location):
             os.makedirs(self.location)
-        tempFileLocations = []
+        destFileLocations = []
         for file in self.files:
-            tempFileName = str(uuid.uuid4()) + '.mp3'
-            tempFileLocation = os.path.join(self.location, tempFileName)
-            shutil.move(file, tempFileLocation)
-            tempFileLocations.append(tempFileLocation)
-        return tempFileLocations
+            filename = str(uuid.uuid4()) + '.mp3'
+            destFileLocation = os.path.join(self.location, filename)
+            shutil.move(file, destFileLocation)
+            destFileLocations.append(destFileLocation)
+        return destFileLocations
